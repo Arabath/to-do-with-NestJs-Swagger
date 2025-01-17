@@ -12,7 +12,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     port: 3306,
     password: 'Jazzband123',
     database: 'to_do',
-    entities: [__dirname + '/**/*.entity{.ts,.js}']
+    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    synchronize: true
   }),UsersModule],
   controllers: [AppController],
   providers: [AppService],
