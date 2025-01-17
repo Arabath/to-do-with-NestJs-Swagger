@@ -1,13 +1,18 @@
+import { HttpException } from '@nestjs/common';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { Profile } from './profile.entity';
 export declare class UsersService {
     private userRepository;
-    constructor(userRepository: Repository<User>);
-    createUser(user: CreateUserDto): Promise<User>;
+    private profileRepository;
+    constructor(userRepository: Repository<User>, profileRepository: Repository<Profile>);
+    createUser(user: CreateUserDto): Promise<User | HttpException>;
     getUsers(): Promise<User[]>;
-    getUser(id: number): Promise<User>;
-    deleteUser(id: number): Promise<import("typeorm").DeleteResult>;
-    updateUser(id: number, user: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
+    getUser(id: number): Promise<User | HttpException>;
+    deleteUser(id: number): Promise<HttpException | import("typeorm").DeleteResult>;
+    updateUser(id: number, user: UpdateUserDto): Promise<HttpException | (User & UpdateUserDto)>;
+    createProfile(id: number, profile: CreateProfileDto): Promise<User | HttpException>;
 }

@@ -12,6 +12,9 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const typeorm_1 = require("@nestjs/typeorm");
+const posts_service_1 = require("./posts/posts.service");
+const posts_controller_1 = require("./posts/posts.controller");
+const posts_module_1 = require("./posts/posts.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -25,9 +28,9 @@ AppModule = __decorate([
                 database: 'to_do',
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true
-            }), users_module_1.UsersModule],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+            }), users_module_1.UsersModule, posts_module_1.PostsModule],
+        controllers: [app_controller_1.AppController, posts_controller_1.PostsController],
+        providers: [app_service_1.AppService, posts_service_1.PostsService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

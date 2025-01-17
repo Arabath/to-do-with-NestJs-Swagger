@@ -17,35 +17,76 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./user.entity");
 const typeorm_2 = require("typeorm");
+const profile_entity_1 = require("./profile.entity");
 let UsersService = class UsersService {
-    constructor(userRepository) {
+    constructor(userRepository, profileRepository) {
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
-    createUser(user) {
+    async createUser(user) {
+        const userFound = await this.userRepository.findOne({
+            where: {
+                username: user.username
+            }
+        });
+        if (userFound) {
+            return new common_1.HttpException('User already exists', common_1.HttpStatus.CONFLICT);
+        }
         const newUser = this.userRepository.create(user);
         return this.userRepository.save(newUser);
     }
     getUsers() {
         return this.userRepository.find();
     }
-    getUser(id) {
-        return this.userRepository.findOne({
+    async getUser(id) {
+        const userFound = await this.userRepository.findOne({
             where: {
-                id
+                id: id,
             }
         });
+        if (!userFound) {
+            return new common_1.HttpException("User not found", common_1.HttpStatus.NOT_FOUND);
+        }
+        return userFound;
     }
-    deleteUser(id) {
-        return this.userRepository.delete({ id });
+    async deleteUser(id) {
+        const result = await this.userRepository.delete({ id });
+        if (result.affected === 0) {
+            return new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        return result;
     }
-    updateUser(id, user) {
-        return this.userRepository.update({ id }, user);
+    async updateUser(id, user) {
+        const userFound = await this.userRepository.findOne({
+            where: { id }
+        });
+        if (!userFound) {
+            return new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const updateUser = Object.assign(userFound, user);
+        return this.userRepository.save(updateUser);
+    }
+    async createProfile(id, profile) {
+        const userFound = await this.userRepository.findOne({
+            where: {
+                id,
+            }
+        });
+        if (!userFound) {
+            return new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const newProfile = this.profileRepository.create(profile);
+        const savedProfile = await this.profileRepository.save(newProfile);
+        userFound.profile = savedProfile;
+        return this.userRepository.save(userFound);
     }
 };
 UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.Profile)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], UsersService);
 exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

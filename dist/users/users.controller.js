@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const users_service_1 = require("./users.service");
 const update_user_dto_1 = require("./dto/update-user.dto");
+const create_profile_dto_1 = require("./dto/create-profile.dto");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -36,6 +37,9 @@ let UsersController = class UsersController {
     updateUser(id, user) {
         return this.usersService.updateUser(id, user);
     }
+    createProfile(id, profile) {
+        return this.usersService.createProfile(id, profile);
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -48,14 +52,14 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], UsersController.prototype, "createUser", null);
 __decorate([
     (0, common_1.Delete)(':id'),
@@ -72,6 +76,14 @@ __decorate([
     __metadata("design:paramtypes", [Number, update_user_dto_1.UpdateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.Post)(':id/profile'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, create_profile_dto_1.CreateProfileDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "createProfile", null);
 UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
