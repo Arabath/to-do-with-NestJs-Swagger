@@ -31,7 +31,9 @@ let PostsService = class PostsService {
         return this.postsRepository.save(newPost);
     }
     getPosts() {
-        return this.postsRepository.find();
+        return this.postsRepository.find({
+            relations: ['author']
+        });
     }
 };
 PostsService = __decorate([

@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsService } from './posts/posts.service';
 import { PostsController } from './posts/posts.controller';
 import { PostsModule } from './posts/posts.module';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -18,7 +20,7 @@ import { PostsModule } from './posts/posts.module';
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true
   }),UsersModule, PostsModule],
-  controllers: [AppController, PostsController],
-  providers: [AppService, PostsService],
+  controllers: [AppController,UsersController, PostsController],
+  providers: [AppService, PostsService, UsersService],
 })
 export class AppModule {}

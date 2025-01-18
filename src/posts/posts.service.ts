@@ -7,7 +7,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostsService {
-
     constructor(
         @InjectRepository(Post) private postsRepository: Repository<Post>,
         private userService: UsersService,
@@ -23,7 +22,9 @@ export class PostsService {
     }
 
     getPosts() {
-        return this.postsRepository.find()
+        return this.postsRepository.find({
+            relations: ['author']
+        })
     }
 
 }
