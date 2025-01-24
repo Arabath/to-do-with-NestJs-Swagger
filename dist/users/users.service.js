@@ -36,13 +36,16 @@ let UsersService = class UsersService {
         return this.userRepository.save(newUser);
     }
     getUsers() {
-        return this.userRepository.find();
+        return this.userRepository.find({
+            relations: ['posts', 'profile']
+        });
     }
     async getUser(id) {
         const userFound = await this.userRepository.findOne({
             where: {
                 id: id,
-            }
+            },
+            relations: ['posts']
         });
         if (!userFound) {
             return new common_1.HttpException("User not found", common_1.HttpStatus.NOT_FOUND);

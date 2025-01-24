@@ -20,7 +20,7 @@ import { UsersService } from './users/users.service';
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true
   }),UsersModule, PostsModule],
-  controllers: [AppController,UsersController, PostsController],
-  providers: [AppService, PostsService, UsersService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
